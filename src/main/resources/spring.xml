@@ -12,4 +12,13 @@
         <constructor-arg ref="eventLogger"/>
     </bean>
 
+    <bean id="event" class="com.shevelev.spring.core.Event" scope="prototype">
+        <constructor-arg>
+            <bean class="java.util.Date" scope="prototype"/>
+        </constructor-arg>
+        <constructor-arg>
+            <bean class="java.text.DateFormat" factory-method="getDateInstance"/>
+        </constructor-arg>
+    </bean>
+
 </beans>
