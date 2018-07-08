@@ -7,9 +7,16 @@
         <constructor-arg value="Denis Shevelev"/>
     </bean>
     <bean id="eventLogger" class="com.shevelev.spring.core.ConsoleEventLogger"/>
+    <bean id="fileEventLogger" class="com.shevelev.spring.core.FileEventLogger" init-method="init">
+        <constructor-arg value="fileDenis"/>
+    </bean>
+    <bean id="cacheFileEventLogger" class="com.shevelev.spring.core.CacheFileEventLogger" destroy-method="destroy">
+        <constructor-arg index="0" type="java.lang.String" value="fileDenis"/>
+        <constructor-arg index="1" type="java.lang.Integer" value="2"/>
+    </bean>
     <bean id="app" class="com.shevelev.spring.core.App">
         <constructor-arg ref="client"/>
-        <constructor-arg ref="eventLogger"/>
+        <constructor-arg ref="cacheFileEventLogger"/>
     </bean>
 
     <bean id="event" class="com.shevelev.spring.core.Event" scope="prototype">
