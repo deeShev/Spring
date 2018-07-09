@@ -1,22 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util
+       http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <import resource="loggers.xml"/>
+
+    <bean class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value> classpath:client.properties</value>
+            </list>
+        </property>
+        <property name="ignoreResourceNotFound" value="true"/>
+        <property name="systemPropertiesMode">
+            <util:constant
+                    static-field="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer.SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+        </property>
+    </bean>
 
     <bean id="client" class="com.shevelev.spring.core.Client">
-        <constructor-arg value="1"/>
-        <constructor-arg value="Denis Shevelev"/>
+        <constructor-arg value="${id}"/>
+        <constructor-arg value="${name}"/>
     </bean>
+
+    <util:map id="loggerMap">
+        <entry key="INFO" value-ref="consoleEventLogger"/>
+        <entry key="ERROR" value-ref="combineEventLogger"/>
+    </util:map>
 
     <bean id="app" class="com.shevelev.spring.core.App">
         <constructor-arg ref="client"/>
         <constructor-arg ref="cacheFileEventLogger"/>
-        <constructor-arg>
-            <map>
-                <entry key="INFO" value-ref="consoleEventLogger"/>
-                <entry key="ERROR" value-ref="combineEventLogger"/>
-            </map>
-        </constructor-arg>
+        <constructor-arg ref="loggerMap"/>
     </bean>
 
     <bean id="event" class="com.shevelev.spring.core.Event" scope="prototype">
@@ -27,6 +46,4 @@
             <bean class="java.text.DateFormat" factory-method="getDateInstance"/>
         </constructor-arg>
     </bean>
-    <import resource="loggers.xml"/>
-
 </beans>
