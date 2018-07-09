@@ -23,7 +23,7 @@ public class FileEventLogger implements EventLogger {
     }
 
     public void writeToFile(File file, String msg) throws IOException {
-        FileUtils.writeStringToFile(file,msg,true);
+        FileUtils.writeStringToFile(file,msg + "\n",true);
     }
 
     public void init(){
