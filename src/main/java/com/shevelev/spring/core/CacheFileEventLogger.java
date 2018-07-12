@@ -1,23 +1,33 @@
 package com.shevelev.spring.core;
 
 import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component("cacheFileEventLogger")
+@Scope("prototype")
 public class CacheFileEventLogger extends FileEventLogger {
+    @Value("2")
     private int cacheSize;
+
     private List<Event> cache;
 
+    public CacheFileEventLogger() {
+    }
 
     public CacheFileEventLogger(String fileName, Integer cacheSize) {
         super(fileName);
         this.cacheSize = cacheSize;
         cache = new ArrayList<>();
     }
-
 
     @Override
     public void logEvent(Event event) {
@@ -40,6 +50,7 @@ public class CacheFileEventLogger extends FileEventLogger {
         }
     }
 
+    @PreDestroy
     public void destroy() throws IOException {
         if (!cache.isEmpty()) {
             System.out.println("Start write and clear!");
@@ -49,6 +60,7 @@ public class CacheFileEventLogger extends FileEventLogger {
         }
     }
 
+    @PostConstruct
     @Override
     public void init() {
         super.init();

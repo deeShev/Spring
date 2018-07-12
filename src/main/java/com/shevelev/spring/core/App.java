@@ -1,18 +1,32 @@
 package com.shevelev.spring.core;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Map;
 
+@Component("app")
 public class App {
     private static ConfigurableApplicationContext ctx;
-
+    @Autowired
     private  Event event;
+
+    @Autowired
     private Client client;
+
+    @Autowired
+    @Qualifier("cacheFileEventLogger")
     private EventLogger eventLogger;
+
+    @Autowired
     private Map<EventType, EventLogger> loggers;
+
+    public App() {
+    }
 
     public App(Client client, EventLogger eventLogger) {
         this.client = client;

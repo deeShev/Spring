@@ -1,16 +1,26 @@
 package com.shevelev.spring.core;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+@Component("client")
+@Scope("prototype")
+@PropertySource("classpath:client.properties")
 public class Client {
+    @Value("${id}")
     private String id;
+
+    @Value("${name}")
     private String fullName;
+
+    public Client() {
+    }
 
     public Client(String id, String fullName) {
         this.id = id;
         this.fullName = fullName;
-    }
-
-    public Client() {
-
     }
 
     public String getId() {

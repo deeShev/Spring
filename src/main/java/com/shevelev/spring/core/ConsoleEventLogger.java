@@ -1,8 +1,12 @@
 package com.shevelev.spring.core;
 
-public class ConsoleEventLogger implements EventLogger{
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
-    public void logEvent(Event event){
+@Component("consoleEventLogger")
+@Scope("prototype")
+public class ConsoleEventLogger implements EventLogger {
+    public void logEvent(Event event) {
         System.out.println(event);
     }
 }
