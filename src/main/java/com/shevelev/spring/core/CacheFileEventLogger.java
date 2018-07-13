@@ -2,7 +2,6 @@ package com.shevelev.spring.core;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -12,21 +11,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component("cacheFileEventLogger")
-@Scope("prototype")
+@Component
 public class CacheFileEventLogger extends FileEventLogger {
-    @Value("2")
     private int cacheSize;
-
     private List<Event> cache;
 
     public CacheFileEventLogger() {
+        cache = new ArrayList<>();
     }
 
-    public CacheFileEventLogger(String fileName, Integer cacheSize) {
-        super(fileName);
+    @Value("2")
+    public void setCacheSize(int cacheSize) {
         this.cacheSize = cacheSize;
-        cache = new ArrayList<>();
     }
 
     @Override

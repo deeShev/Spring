@@ -3,26 +3,18 @@ package com.shevelev.spring.core;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Map;
 
-@Component("app")
+@Component
 public class App {
     private static ConfigurableApplicationContext ctx;
-    @Autowired
-    private  Event event;
-
-    @Autowired
+    private Event event;
     private Client client;
-
-    @Autowired
-    @Qualifier("cacheFileEventLogger")
     private EventLogger eventLogger;
-
-    @Autowired
     private Map<EventType, EventLogger> loggers;
 
     public App() {
@@ -39,8 +31,29 @@ public class App {
         this.loggers = loggers;
     }
 
+    @Autowired
+    public void setEvent(Event event) {
+        this.event = event;
+    }
+
+    @Autowired
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    @Autowired
+    @Qualifier("cacheFileEventLogger")
+    public void setEventLogger(EventLogger eventLogger) {
+        this.eventLogger = eventLogger;
+    }
+
+    @Autowired
+    public void setLoggers(Map<EventType, EventLogger> loggers) {
+        this.loggers = loggers;
+    }
+
     public static void main(String[] args) throws IOException {
-        ctx = new ClassPathXmlApplicationContext("spring.xml");
+        ctx = new AnnotationConfigApplicationContext(AppConfig.class);
         App app = (App) ctx.getBean("app");
         int count = 0;
         for (EventType currentEventType : app.loggers.keySet()){

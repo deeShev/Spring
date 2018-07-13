@@ -3,15 +3,13 @@ package com.shevelev.spring.core;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
 
-@Component("fileEventLogger")
-@Scope("prototype")
+@Component
 @PropertySource("classpath:client.properties")
 public class FileEventLogger implements EventLogger {
     @Value("${name}")
@@ -22,6 +20,10 @@ public class FileEventLogger implements EventLogger {
     }
 
     public FileEventLogger(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public void setFileName(String fileName) {
         this.fileName = fileName;
     }
 

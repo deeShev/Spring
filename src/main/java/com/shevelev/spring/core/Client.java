@@ -2,17 +2,12 @@ package com.shevelev.spring.core;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-@Component("client")
-@Scope("prototype")
+@Component
 @PropertySource("classpath:client.properties")
 public class Client {
-    @Value("${id}")
     private String id;
-
-    @Value("${name}")
     private String fullName;
 
     public Client() {
@@ -27,6 +22,7 @@ public class Client {
         return id;
     }
 
+    @Value("${id}")
     public void setId(String id) {
         this.id = id;
     }
@@ -35,6 +31,7 @@ public class Client {
         return fullName;
     }
 
+    @Value("${name}")
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
