@@ -1,6 +1,7 @@
 package com.shevelev.spring.core;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -16,6 +17,7 @@ public class CombinedEventLogger implements EventLogger {
     }
 
     @Autowired
+    @Qualifier("loggers")
     public void setLoggers(Collection<EventLogger> loggers) {
         this.loggers = loggers;
     }

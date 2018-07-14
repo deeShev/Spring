@@ -15,7 +15,7 @@ public class App {
     private Event event;
     private Client client;
     private EventLogger eventLogger;
-    private Map<EventType, EventLogger> loggers;
+    private Map<EventType, EventLogger> loggerMap;
 
     public App() {
     }
@@ -25,10 +25,10 @@ public class App {
         this.eventLogger = eventLogger;
     }
 
-    public App(Client client, EventLogger eventLogger, Map<EventType, EventLogger> loggers) {
+    public App(Client client, EventLogger eventLogger, Map<EventType, EventLogger> loggerMap) {
         this.client = client;
         this.eventLogger = eventLogger;
-        this.loggers = loggers;
+        this.loggerMap = loggerMap;
     }
 
     @Autowired
@@ -48,15 +48,17 @@ public class App {
     }
 
     @Autowired
-    public void setLoggers(Map<EventType, EventLogger> loggers) {
-        this.loggers = loggers;
+    public void setLoggerMap(Map<EventType, EventLogger> loggerMap) {
+        this.loggerMap = loggerMap;
     }
 
     public static void main(String[] args) throws IOException {
         ctx = new AnnotationConfigApplicationContext(AppConfig.class);
         App app = (App) ctx.getBean("app");
+        DBLogger dbLogger = ctx.getBean(DBLogger.class);
+        dbLogger.logEvent(app.event);
         int count = 0;
-        for (EventType currentEventType : app.loggers.keySet()){
+        for (EventType currentEventType : app.loggerMap.keySet()){
                 app.logEvent(currentEventType, "Logger =" + currentEventType + " count =" + count++);
             }
         }
@@ -66,7 +68,7 @@ public class App {
     }
 
     private void logEvent(EventType type, String msg) throws IOException {
-        EventLogger logger = loggers.get(type);
+        EventLogger logger = loggerMap.get(type);
         event = (Event) ctx.getBean("event");
         event.setMsg(msg);
 
